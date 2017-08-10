@@ -171,10 +171,10 @@ void checkServo () {
 
 void leaveAngle() {
   while (sonic->measureDistance() < collEntf) {
-    motor.turnRight (200);
+    flash ->turnRight (200);
     delay (200);
   }
-  motor.turnRight (400);
+  flash->turnRight (400);
 }
 
 void voidcollision () {
