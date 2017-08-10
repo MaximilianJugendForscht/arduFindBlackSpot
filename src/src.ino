@@ -28,6 +28,7 @@
   void findLeftBack ();
   void findRight ();
   void goToNewPlace ();
+  void checkServo();
 
   //variable colliding
   const short drehZeit = 25;
@@ -43,6 +44,7 @@ void setup() {
 
 void loop() {
   if (!findRightBlack && !findLeftBlack) {
+    serv -> setPosition (255, 40);
     spiralDrehung();
   }
   getColors();
@@ -112,12 +114,50 @@ void goToNewPlace () {
   int start = millis ();
   startTimer ();
   while (start - millis <= toDrive) {
-    motor.forward();
-    if (sonic-> measureDistance > collEntf) {
-      motor.stop;
+    checkServo();
+    flash->forward();
+    if (sonic-> measureDistance() > collEntf) {
+      flash -> stop();
+      flash -> turnLeft (500); //to be tested at SAP
       endTimer();
       break;
     }
   }
   motor.stop ();
+}
+
+void checkServo () {
+   serv->setPosition (30, 15);
+   if (sens->measureDistance() > collEntf){
+         flash ->forward ();
+      }
+      else {
+        flash->stop();
+        findBestDirection();
+      }
+   serv->setPosition (90, 15);
+   if (!(isColliding())){
+         flash->forward ();
+      }
+      else {
+        flash->stop();
+        findBestDirection();
+      }
+  serv->setPosition (150, 15);
+   if (sens->measureDistance() > collEntf){
+         flash->forward ();
+      }
+      else {
+        flash->stop();
+        findBestDirection();
+      }
+
+   serv->setPosition (90, 15);
+   if (!(isColliding())){
+         flash->forward ();
+      }
+      else {
+        flash ->stop();
+        findBestDirection();
+      }
 }
