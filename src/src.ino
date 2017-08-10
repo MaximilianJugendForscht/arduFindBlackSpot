@@ -174,18 +174,13 @@ void leaveAngle() {
     flash ->turnRight (200);
     delay (200);
   }
-<<<<<<< Updated upstream
   flash->turnRight (400);
-=======
-    motor.turnRight (400);
->>>>>>> Stashed changes
 }
 
 void voidcollision () {
   checkServo ();
 }
 
-<<<<<<< Updated upstream
 int getDriveTime () {
   return timetoCollide;
 }
@@ -196,11 +191,11 @@ void startTimer () {
 
 void endTimer () {
   endedTimer = millis();
-=======
+}
+
 void SpiralDrehung () {
   while (sonic->measureDistance() < collEntf) {
     motor.turnLeft(5);
     motor.drive(10);
   }
->>>>>>> Stashed changes
 }
