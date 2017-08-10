@@ -49,6 +49,7 @@ void loop() {
   }
   getColors();
   findRightBlack();
+  findLeftBlack ();
 }
 
 //functions
