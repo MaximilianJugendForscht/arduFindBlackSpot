@@ -1,6 +1,4 @@
 #include <Servo_Manual.h>
-#include <IR_Keys.h>
-#include <IRremote.h>
 #include <Robot_Motor.h>
 #include <SR04_Ultrasonic.h>
 #include <LiquidCrystal.h>
@@ -27,6 +25,9 @@
   bool left = false;
   bool right = false;
 
+void goToNewPlace () {
+
+}
   void getColors ();
   void findLeftBack ();
   void findRight ();
@@ -103,4 +104,8 @@ void SpiralDrehung () {
   }
   endTimer ();
   toDrive = getDriveTime() / 2;
+}
+
+void goToNewPlace () {
+  int before
 }
