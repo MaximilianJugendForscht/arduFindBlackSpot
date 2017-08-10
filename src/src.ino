@@ -42,7 +42,11 @@ void setup() {
 }
 
 void loop() {
-  spiralDrehung();
+  if (!findRightBlack && !findLeftBlack) {
+    spiralDrehung();
+  }
+  getColors();
+  findRightBlack();
 }
 
 //functions
