@@ -5,6 +5,8 @@
 #include <SR04_Ultrasonic.h>
 #include <LiquidCrystal.h>
 
+  //hallo
+
   //initalizing
   Robot_Motor *flash = new Robot_Motor (5, 6, 9, 10);
   SR04_Ultrasonic *sonic = new SR04_Ultrasonic (13, A0);
@@ -146,7 +148,7 @@ void checkServo () {
         motor.stop();
         findBestDirection();
       }
-    
+
    serv->setPosition (90, 15);
    if (!(isColliding())){
          motor.forward ();
@@ -168,4 +170,3 @@ void leaveAngle() {
 void voidcollision () {
   checkServo ();
 }
-
