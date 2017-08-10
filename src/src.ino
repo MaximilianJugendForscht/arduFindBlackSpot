@@ -25,9 +25,7 @@
   bool left = false;
   bool right = false;
 
-void goToNewPlace () {
-
-}
+  void goToNewPlace ();
   void getColors ();
   void findLeftBack ();
   void findRight ();
@@ -107,5 +105,15 @@ void SpiralDrehung () {
 }
 
 void goToNewPlace () {
-  int before
+  int start = millis ();
+  startTimer ();
+  while (start - millis <= toDrive) {
+    motor.forward();
+    if (sonic-> measureDistance > collEntf) {
+      motor.stop;
+      endTimer();
+      break;
+    }
+  }
+  motor.stop ();
 }
