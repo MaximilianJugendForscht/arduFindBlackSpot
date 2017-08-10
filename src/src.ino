@@ -3,11 +3,13 @@
 #include <IRremote.h>
 #include <Robot_Motor.h>
 #include <SR04_Ultrasonic.h>
+#include <LiquidCrystal.h>
 
   //initalizing
   Robot_Motor *flash = new Robot_Motor (5, 6, 9, 10);
   SR04_Ultrasonic *sonic = new SR04_Ultrasonic (13, A0);
   Servo_Manual *serv = new Servo_Manual (11);
+  LiquidCrystal *lcd = new LiquidCrystal (0x27, 2, 1, 0, 4, 5, 6, 7);
 
   //variable Colors
   const short sensL = 2;
@@ -35,7 +37,6 @@
 
 void setup() {
   flash->setSpeed(150);
-
 }
 
 void loop() {
