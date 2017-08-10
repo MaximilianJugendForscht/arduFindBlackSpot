@@ -19,6 +19,9 @@
 
 
   int timetoCollide;
+  int startedTimer;
+  int endedTimer;
+
 
   bool left = false;
   bool right = false;
@@ -32,6 +35,8 @@
   const short longTurn = 200;
   const float collEntf = 10.0; //collisions-entfernung in cm
 
+
+
   bool isColliding ();
   bool evalDist ();
 
@@ -40,6 +45,7 @@
   void leaveAngel ();
   void voidcollision ();
 
+  int getDriveTime ();
 
 void setup() {
   flash->setSpeed(150);
@@ -117,10 +123,10 @@ void findBestDirection () {
   bool rightTurn = evalDist (leftDist, rightDist);
 
   if (rightTurn && rightDist < collEntf) {
-    motor.turnRight (600);
+    flash->turnRight (600);
     delay (600);
   } else if (!(rightTurn) && leftDist < collEntf) {
-    motor.turnLeft (600);
+    flash->turnLeft (600);
     delay(600);
   } else {
     leaveAngle();
@@ -130,41 +136,41 @@ void findBestDirection () {
 void checkServo () {
    serv->setPosition (30, 15);
    if (sens->measureDistance() > collEntf){
-         motor.forward ();
+         flash ->forward ();
       }
       else {
-        motor.stop();
+        flash->stop();
         findBestDirection();
       }
    serv->setPosition (90, 15);
    if (!(isColliding())){
-         motor.forward ();
+         flash->forward ();
       }
       else {
-        motor.stop();
+        flash->stop();
         findBestDirection();
       }
   serv->setPosition (150, 15);
    if (sens->measureDistance() > collEntf){
-         motor.forward ();
+         flash->forward ();
       }
       else {
-        motor.stop();
+        flash->stop();
         findBestDirection();
       }
 
    serv->setPosition (90, 15);
    if (!(isColliding())){
-         motor.forward ();
+         flash->forward ();
       }
       else {
-        motor.stop();
+        flash ->stop();
         findBestDirection();
       }
 }
 
 void leaveAngle() {
-  while (sens->measureDistance() < collEntf) {
+  while (sonic->measureDistance() < collEntf) {
     motor.turnRight (200);
     delay (200);
   }
@@ -173,4 +179,16 @@ void leaveAngle() {
 
 void voidcollision () {
   checkServo ();
+}
+
+int getDriveTime () {
+  return timetoCollide;
+}
+
+void startTimer () {
+  startedTimer = millis();
+}
+
+void endTimer () {
+  endedTimer = millis();
 }
