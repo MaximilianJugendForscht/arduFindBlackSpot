@@ -17,6 +17,9 @@
   const short sensL = 2;
   const short sensR = 3;
 
+
+  int timetoCollide;
+
   bool left = false;
   bool right = false;
 
@@ -36,6 +39,7 @@
   void checkServo ();
   void leaveAngel ();
   void voidcollision ();
+
 
 void setup() {
   flash->setSpeed(150);
