@@ -19,7 +19,7 @@
   void getColors ();
   void findLeftBack ();
   void findRight ();
-  
+
   //variabel colliding
   const short drehZeit = 25;
   const short longTurn = 200;
@@ -32,7 +32,7 @@
   void checkServo ();
   void leaveAngel ();
   void voidcollision ();
-  
+
 void setup() {
   flash->setSpeed(150);
 
@@ -54,6 +54,10 @@ void getColors () {
     right = true;
   } else {
     right = false;
+  }
+
+  if (left == right == true) {
+    exit (0);
   }
 }
 
@@ -99,7 +103,7 @@ bool evalDist (int a, int b) {
 void findBestDirection () {
   int leftDist;
   int rightDist;
-  
+
   serv->setPosition (255, 10);
   leftDist = sens-> measureDistance();
   serv->setPosition (0, 10);
@@ -121,7 +125,7 @@ void findBestDirection () {
 
 void checkServo () {
    serv->setPosition (30, 15);
-   if (sens->measureDistance() > collEntf){ 
+   if (sens->measureDistance() > collEntf){
          motor.forward ();
       }
       else {
@@ -129,7 +133,7 @@ void checkServo () {
         findBestDirection();
       }
    serv->setPosition (90, 15);
-   if (!(isColliding())){ 
+   if (!(isColliding())){
          motor.forward ();
       }
       else {
@@ -137,7 +141,7 @@ void checkServo () {
         findBestDirection();
       }
   serv->setPosition (150, 15);
-   if (sens->measureDistance() > collEntf){ 
+   if (sens->measureDistance() > collEntf){
          motor.forward ();
       }
       else {
@@ -145,7 +149,7 @@ void checkServo () {
         findBestDirection();
       }
    serv->setPosition (90, 15);
-   if (!(isColliding())){ 
+   if (!(isColliding())){
          motor.forward ();
       }
       else {
@@ -165,4 +169,3 @@ void leaveAngle() {
 void voidcollision () {
   checkServo ();
 }
-
