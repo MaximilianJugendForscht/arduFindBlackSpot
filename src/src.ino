@@ -27,6 +27,7 @@
   void getColors ();
   void findLeftBack ();
   void findRight ();
+  void goToNewPlace ();
 
   //variable colliding
   const short drehZeit = 25;
@@ -100,6 +101,7 @@ void SpiralDrehung () {
   }
   endTimer ();
   toDrive = getDriveTime() / 2;
+  goToNewPlace ();
 }
 
 void goToNewPlace () {
