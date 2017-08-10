@@ -43,13 +43,13 @@
 
   void findBestDirection ();
   void checkServo ();
-  void leaveAngel ();
   void voidcollision ();
 
   int getDriveTime ();
 
 void setup() {
   flash->setSpeed(150);
+  serv ->setPosition (255, 40);
 }
 
 void loop() {
@@ -132,50 +132,6 @@ void findBestDirection () {
   } else {
     leaveAngle();
   }
-}
-
-void checkServo () {
-   serv->setPosition (30, 15);
-   if (sens->measureDistance() > collEntf){
-         flash ->forward ();
-      }
-      else {
-        flash->stop();
-        findBestDirection();
-      }
-   serv->setPosition (90, 15);
-   if (!(isColliding())){
-         flash->forward ();
-      }
-      else {
-        flash->stop();
-        findBestDirection();
-      }
-  serv->setPosition (150, 15);
-   if (sens->measureDistance() > collEntf){
-         flash->forward ();
-      }
-      else {
-        flash->stop();
-        findBestDirection();
-      }
-
-   serv->setPosition (90, 15);
-   if (!(isColliding())){
-         flash->forward ();
-      }
-      else {
-        flash ->stop();
-        findBestDirection();
-      }
-}
-
-void leaveAngle() {
-  while (sonic->measureDistance() < collEntf) {
-    flash ->turnRight (200);
-    delay (200);
-  }
-  flash->turnRight (400);
 }
 
 void voidcollision () {
