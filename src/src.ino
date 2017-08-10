@@ -36,15 +36,6 @@
   const short longTurn = 200;
   const float collEntf = 10.0; //collisions-entfernung in cm
 
-
-
-  bool isColliding ();
-  bool evalDist ();
-
-  void findBestDirection ();
-  void checkServo ();
-  void voidcollision ();
-
   int getDriveTime ();
 
 void setup() {
@@ -53,7 +44,7 @@ void setup() {
 }
 
 void loop() {
-  voidcollision ();
+  spiralDrehung();
 }
 
 //functions
@@ -91,52 +82,6 @@ void findRightBlack () {
   flash->drive (100);
 }
 
-// colliding
-bool isColliding () {
-   if (sens-> measureDistance () < collEntf) {
-      writeCollisionMessage();
-      return true;
-   }
-   else {
-      return false;
-   }
-}
-
-bool evalDist (int a, int b) {
-  if (a > b) {
-    return false;
-  } if (a < b) {
-    return true;
-  }
-  if (a == b) {
-    return true;
-  }
-}
-
-void findBestDirection () {
-  int leftDist;
-  int rightDist;
-
-  serv->setPosition (255, 10);
-  leftDist = sens-> measureDistance();
-  serv->setPosition (0, 10);
-  rightDist = sens-> measureDistance();
-  bool rightTurn = evalDist (leftDist, rightDist);
-
-  if (rightTurn && rightDist < collEntf) {
-    flash->turnRight (600);
-    delay (600);
-  } else if (!(rightTurn) && leftDist < collEntf) {
-    flash->turnLeft (600);
-    delay(600);
-  } else {
-    leaveAngle();
-  }
-}
-
-void voidcollision () {
-  checkServo ();
-}
 
 int getDriveTime () {
   return timetoCollide;
