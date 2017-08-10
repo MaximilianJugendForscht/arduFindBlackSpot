@@ -25,7 +25,7 @@
   //variable colliding
   const short drehZeit = 25;
   const short longTurn = 200;
-  const float collEntf = 20.0; //collisions-entfernung in cm
+  const float collEntf = 10.0; //collisions-entfernung in cm
 
   bool isColliding ();
   bool evalDist ();
@@ -85,7 +85,6 @@ bool isColliding () {
       return true;
    }
    else {
-      lcd -> clear();
       return false;
    }
 }
@@ -114,11 +113,9 @@ void findBestDirection () {
   if (rightTurn && rightDist < collEntf) {
     motor.turnRight (600);
     delay (600);
-    lcd-> clear();
   } else if (!(rightTurn) && leftDist < collEntf) {
     motor.turnLeft (600);
     delay(600);
-    lcd -> clear();
   } else {
     leaveAngle();
   }
@@ -149,6 +146,7 @@ void checkServo () {
         motor.stop();
         findBestDirection();
       }
+    
    serv->setPosition (90, 15);
    if (!(isColliding())){
          motor.forward ();
@@ -170,3 +168,4 @@ void leaveAngle() {
 void voidcollision () {
   checkServo ();
 }
+
