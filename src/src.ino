@@ -22,6 +22,7 @@
   int startedTimer;
   int endedTimer;
 
+  int toDrive;
 
   bool left = false;
   bool right = false;
@@ -194,8 +195,11 @@ void endTimer () {
 }
 
 void SpiralDrehung () {
+  startTimer ();
   while (sonic->measureDistance() > collEntf) {
     motor.turnLeft(5);
     motor.drive(10);
   }
+  endTimer ();
+  toDrive = getDriveTime() / 2;
 }
