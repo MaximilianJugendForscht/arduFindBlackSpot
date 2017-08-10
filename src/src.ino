@@ -194,7 +194,7 @@ void endTimer () {
 }
 
 void SpiralDrehung () {
-  while (sonic->measureDistance() < collEntf) {
+  while (sonic->measureDistance() > collEntf) {
     motor.turnLeft(5);
     motor.drive(10);
   }
