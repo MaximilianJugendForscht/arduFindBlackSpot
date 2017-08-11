@@ -127,7 +127,7 @@ void spiralDrehung () {
 }
 
 void goToNewPlace () {
-  serv -> setPosition (90, 10);
+/*  serv -> setPosition (90, 10);
   startTimer ();
   while (!(isColliding())) {
     checkServo();
@@ -136,7 +136,7 @@ void goToNewPlace () {
   flash->turnRight(turnTime);
   endTimer ();
   toDrive = getDriveTime();
-  toDrive = toDrive / 2;
+  toDrive = toDrive / 2; */
   
   int start = millis ();
   lcd->clear();
