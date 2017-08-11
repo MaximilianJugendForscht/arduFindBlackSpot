@@ -7,6 +7,33 @@
   SR04_Ultrasonic *sonic = new SR04_Ultrasonic (13, A0);
   Servo_Manual *serv = new Servo_Manual (11);
   LiquidCrystal_I2C *lcd = new LiquidCrystal_I2C (0x27, 2, 1, 0, 4, 5, 6, 7);
+
+  class control {
+    public: 
+      void setState (short stateI){
+        if(state < 3) {
+          state = stateI;
+        }
+        runState ();
+      }
+
+      setupRobot ();
+      
+    private:
+      short state; // 0 = setup, 1 = spiral, 2 = find new spot
+
+      void runState () {
+        switch (state) {
+          case 0: setupRobot (); break;
+          case 1: spiralRobot (); break;
+          case 2: robotFindNew (); break;
+        }
+      }
+
+    
+  }
+    control *robot = new control ();
+
   //variable Colors
   const short sensL = 2;
   const short sensR = 3;
@@ -40,11 +67,7 @@
   int getDriveTime ();
 
 void setup() {
-  flash->setSpeed(215);
-  serv ->setPosition (255, 40);
-  lcd -> setBacklightPin (3, POSITIVE);
-  lcd -> setBacklight (HIGH);
-  lcd -> begin(16, 2);
+
 }
 
 void loop() {
@@ -109,24 +132,35 @@ void endTimer () {
 
 void spiralDrehung () {
   serv-> setPosition (50, 50);
-  int counter = 40;
+  int counter = 100;
   int whileCounter = 0;
+  bool lookLeft = false;
   while (!(isColliding())) {
     flash->turnLeft(50);
-    whileCounter = 0;
-    while (!(isColliding()) && whileCounter < counter) {
+    int wCounter = 0;
+    while (!(isColliding())) {
       flash-> forward();
-      counter ++;
+      wCounter ++;
+      if (wCounter == counter) {
+        break;
+      }
+      flash-> stop();
     }
-    flash -> stop();
-    counter += 10;
+    counter += 30;
+    if (lookLeft = false) {
+      serv -> setPosition (190, 10);
+      lookLeft = true;
+    } else  {
+      serv -> setPosition (30, 10);
+      lookLeft = false;
+    }
   }
   flash -> turnLeft (turnTime);
   goToNewPlace ();
 }
 
 void goToNewPlace () {
-  serv -> setPosition (90, 10);
+/*  serv -> setPosition (90, 10);
   startTimer ();
   while (!(isColliding())) {
     checkServo();
@@ -135,7 +169,7 @@ void goToNewPlace () {
   flash->turnRight(turnTime);
   endTimer ();
   toDrive = getDriveTime();
-  toDrive = toDrive / 2;
+  toDrive = toDrive / 2; */
   
   int start = millis ();
   lcd->clear();
@@ -235,5 +269,13 @@ void findBestDirection () {
     flash->turnLeft (600); 
     delay(600); }
 } 
- 
+
+
+void setupRobot () {
+  flash->setSpeed(215);
+  serv ->setPosition (255, 40);
+  lcd -> setBacklightPin (3, POSITIVE);
+  lcd -> setBacklight (HIGH);
+  lcd -> begin(16, 2);  
+}
 
