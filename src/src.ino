@@ -109,17 +109,27 @@ void endTimer () {
 
 void spiralDrehung () {
   serv-> setPosition (50, 50);
-  int counter = 40;
+  int counter = 100;
   int whileCounter = 0;
   bool lookLeft = false;
   while (!(isColliding())) {
     flash->turnLeft(50);
-    flash->drive (counter);
-    counter += 1;
+    int wCounter = 0;
+    while (!(isColliding())) {
+      flash-> forward();
+      wCounter ++;
+      if (wCounter == counter) {
+        break;
+      }
+      flash-> stop();
+    }
+    counter += 30;
     if (lookLeft = false) {
       serv -> setPosition (190, 10);
+      lookLeft = true;
     } else  {
       serv -> setPosition (30, 10);
+      lookLeft = false;
     }
   }
   flash -> turnLeft (turnTime);
