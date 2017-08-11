@@ -7,6 +7,33 @@
   SR04_Ultrasonic *sonic = new SR04_Ultrasonic (13, A0);
   Servo_Manual *serv = new Servo_Manual (11);
   LiquidCrystal_I2C *lcd = new LiquidCrystal_I2C (0x27, 2, 1, 0, 4, 5, 6, 7);
+
+  class control {
+    public: 
+      void setState (short stateI){
+        if(state < 4) {
+          state = stateI;
+        }
+        runState ();
+      }
+
+      void setupRobot ();
+      void spiralRobot();
+      void robotFindNew ();
+      
+    private:
+      short state; // 0 = setup, 1 = spiral, 2 = find new spot, 3 = on black spot
+
+      void runState () {
+        switch (state) {
+          case 0: setupRobot (); break;
+          case 1: spiralRobot (); break;
+          case 2: robotFindNew (); break;
+        }
+      }
+  };
+    control *robot = new control ();
+
   //variable Colors
   const short sensL = 2;
   const short sensR = 3;
@@ -40,23 +67,11 @@
   int getDriveTime ();
 
 void setup() {
-  flash->setSpeed(215);
-  serv ->setPosition (255, 40);
-  lcd -> setBacklightPin (3, POSITIVE);
-  lcd -> setBacklight (HIGH);
-  lcd -> begin(16, 2);
+  robot -> setState (0);
 }
 
 void loop() {
-  if (!(left) && !(right)) {
-    serv -> setPosition (255, 40);
-    spiralDrehung();
-  }
-  lcd -> setCursor (10, 0);
-  lcd -> print ("HALLO");
-  /*getColors();
-  findRightBlack();
-  findLeftBlack ();*/
+  robot-> setState (1);
 }
 
 //functions
@@ -79,7 +94,7 @@ void getColors () {
 }
 
 void findLeftBlack () {
-  while (right == false) {
+  while (right == false && left == true) {
     flash->turnLeft (10);
     getColors ();
   }
@@ -87,7 +102,7 @@ void findLeftBlack () {
 }
 
 void findRightBlack () {
-  while (left == false) {
+  while (left == false && right == true) {
     flash->turnRight (10);
     getColors ();
   }
@@ -109,24 +124,35 @@ void endTimer () {
 
 void spiralDrehung () {
   serv-> setPosition (50, 50);
-  int counter = 40;
+  int counter = 100;
   int whileCounter = 0;
+  bool lookLeft = false;
   while (!(isColliding())) {
     flash->turnLeft(50);
-    whileCounter = 0;
-    while (!(isColliding()) && whileCounter < counter) {
+    int wCounter = 0;
+    while (!(isColliding())) {
       flash-> forward();
-      counter ++;
+      wCounter ++;
+      if (wCounter == counter) {
+        break;
+      }
+      flash-> stop();
     }
-    flash -> stop();
-    counter += 10;
+    counter += 30;
+    if (lookLeft = false) {
+      serv -> setPosition (190, 10);
+      lookLeft = true;
+    } else  {
+      serv -> setPosition (30, 10);
+      lookLeft = false;
+    }
   }
   flash -> turnLeft (turnTime);
   goToNewPlace ();
 }
 
 void goToNewPlace () {
-  serv -> setPosition (90, 10);
+/*  serv -> setPosition (90, 10);
   startTimer ();
   while (!(isColliding())) {
     checkServo();
@@ -135,7 +161,7 @@ void goToNewPlace () {
   flash->turnRight(turnTime);
   endTimer ();
   toDrive = getDriveTime();
-  toDrive = toDrive / 2;
+  toDrive = toDrive / 2; */
   
   int start = millis ();
   lcd->clear();
@@ -235,5 +261,56 @@ void findBestDirection () {
     flash->turnLeft (600); 
     delay(600); }
 } 
- 
+
+
+void control::setupRobot () {
+  flash->setSpeed(215);
+  serv ->setPosition (255, 40);
+  lcd -> setBacklightPin (3, POSITIVE);
+  lcd -> setBacklight (HIGH);
+  lcd -> begin(16, 2);  
+}
+
+void control::spiralRobot() {
+  while (!(isColliding())) {
+    flash->forward ();
+    flash->turnLeft(30);
+    flash->forward();
+    getColors ();
+    findLeftBlack ();
+    findRightBlack ();
+  }
+  flash-> stop ();
+  setState (2);
+}
+
+void control::robotFindNew () {
+  flash -> turnLeft (turnTime);
+  int relTime = 0;
+  startTimer ();
+  while (!(isColliding)) {
+    flash->forward();
+    getColors ();
+    findLeftBlack ();
+    findRightBlack ();
+  }
+  endTimer ();
+  relTime = getDriveTime () / 2;
+  
+  start: 
+  flash->turnLeft (turnTime);
+  int startTime = millis();  
+  while (millis - startTime <= relTime && !(isColliding())) {
+    flash->forward();
+    getColors ();
+    findLeftBlack ();
+    findRightBlack ();
+  }
+  flash-> stop();
+  if (isColliding) {
+    goto start;
+  } else {
+    robot->setState (1);
+  }
+}
 
