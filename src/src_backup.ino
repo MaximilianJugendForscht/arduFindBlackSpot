@@ -1,7 +1,11 @@
 #include <Servo_Manual.h>
+#include <IR_Keys.h>
+#include <IRremote.h>
 #include <Robot_Motor.h>
 #include <SR04_Ultrasonic.h>
 #include <LiquidCrystal.h>
+
+  //hallo
 
   //initalizing
   Robot_Motor *flash = new Robot_Motor (5, 6, 9, 10);
@@ -23,12 +27,9 @@
   bool left = false;
   bool right = false;
 
-  void goToNewPlace ();
   void getColors ();
   void findLeftBack ();
   void findRight ();
-  void goToNewPlace ();
-  void checkServo();
 
   //variable colliding
   const short drehZeit = 25;
@@ -43,13 +44,7 @@ void setup() {
 }
 
 void loop() {
-  if (!findRightBlack && !findLeftBlack) {
-    serv -> setPosition (255, 40);
-    spiralDrehung();
-  }
-  getColors();
-  findRightBlack();
-  findLeftBlack ();
+  spiralDrehung();
 }
 
 //functions
@@ -108,57 +103,4 @@ void SpiralDrehung () {
   }
   endTimer ();
   toDrive = getDriveTime() / 2;
-  goToNewPlace ();
-}
-
-void goToNewPlace () {
-  int start = millis ();
-  startTimer ();
-  while (start - millis <= toDrive) {
-    checkServo();
-    flash->forward();
-    if (sonic-> measureDistance() > collEntf) {
-      flash -> stop();
-      flash -> turnLeft (500); //to be tested at SAP
-      endTimer();
-      break;
-    }
-  }
-  motor.stop ();
-}
-
-void checkServo () {
-   serv->setPosition (30, 15);
-   if (sens->measureDistance() > collEntf){
-         flash ->forward ();
-      }
-      else {
-        flash->stop();
-        findBestDirection();
-      }
-   serv->setPosition (90, 15);
-   if (!(isColliding())){
-         flash->forward ();
-      }
-      else {
-        flash->stop();
-        findBestDirection();
-      }
-  serv->setPosition (150, 15);
-   if (sens->measureDistance() > collEntf){
-         flash->forward ();
-      }
-      else {
-        flash->stop();
-        findBestDirection();
-      }
-
-   serv->setPosition (90, 15);
-   if (!(isColliding())){
-         flash->forward ();
-      }
-      else {
-        flash ->stop();
-        findBestDirection();
-      }
 }
